@@ -1,0 +1,17 @@
+{
+	"name": "archery-contracts",
+	"version": "0.1.0",
+	"description": "Shared TypeScript type contracts for the VSK Archery Club system (source of truth for backend, front-end, and dashboard).",
+	"type": "module",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"default": "./src/index.ts"
+		}
+	},
+	"files": [
+		"src"
+	],
+	"license": "ISC"
+}
