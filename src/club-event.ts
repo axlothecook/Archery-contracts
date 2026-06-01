@@ -1,4 +1,4 @@
-import type { ImageRef, Locale } from './common';
+import type { ImageRef, Locale } from './common.ts';
 
 // Tournament / club event. Source-agnostic (World Archery auto-fetch, admin-manual,
 // or domestic from Facebook). The site only shows events the club attended.
@@ -35,7 +35,8 @@ export type ClubEvent = {
 	dateTo: string | null; // ISO; null = single-day event
 
 	image: ImageRef | null; // event poster/photo; falls back to placeholder/discipline default
-	attendingArcherIds: string[]; // roster archers; site only shows events where length > 0
+	attendingArcherIds: string[]; // roster archers
+	hasUnlistedClubAttendee: boolean; // a club member not in the roster attended (no name shown)
 	sourceUrl: string | null; // "view original" — WA page / FB post
 
 	isCancelled: boolean;
@@ -48,4 +49,36 @@ export type ClubEvent = {
 
 	translations: ClubEventTranslation[];
 	sourceLocale: Locale;
+};
+
+// The event's level, resolved for the public calendar legend: name flattened to
+// the requested locale + the legend color.
+export type EventLevelResolved = {
+	id: string;
+	name: string;
+	color: string;
+};
+
+// Resolved single-locale view for the public read API. `name` flattened to the
+// requested locale; dates are ISO strings; `level` embedded (resolved) or null;
+// `attendees` are plain names only (no photos, no profile links).
+export type ClubEventResolved = {
+	id: string;
+	discipline: Discipline;
+	format: string | null;
+	dateFrom: string; // ISO
+	dateTo: string | null; // ISO
+
+	image: ImageRef | null;
+	sourceUrl: string | null;
+	isCancelled: boolean;
+	location: string | null;
+	organizer: string | null;
+
+	level: EventLevelResolved | null;
+	attendees: string[]; // "firstName lastName" of named roster archers
+	hasUnlistedClubAttendee: boolean; // → UI may show "and other club members"
+
+	locale: Locale;
+	name: string;
 };

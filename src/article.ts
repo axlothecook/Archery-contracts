@@ -1,4 +1,4 @@
-import type { Locale } from './common';
+import type { ImageRef, Locale } from './common.ts';
 
 // News article. Serves BOTH Facebook-imported and manually-written posts.
 
@@ -43,15 +43,17 @@ export type ArticleDraftRevision = {
 	mentionedArcherIds: string[];
 };
 
-export type ArticleMediaType =
-	| 'text-rich'
-	| 'photo-album'
-	| 'video-link'
-	| 'external-article';
+// The 4 article types. Each has its own main-poster source + text handling:
+//  event        — first pulled photo; full FB text, no template.
+//  gallery       — first pulled photo; thin text may get a template; video discarded.
+//  external-link — external cover image or a static fallback; links out.
+//  video-only    — video thumbnail; video may optionally be embedded.
+export type ArticleMediaType = 'event' | 'gallery' | 'external-link' | 'video-only';
 
 export type Article = {
 	// — Identity & source —
 	id: string; // our backend PK (manual posts get one too)
+	slug: string; // pretty URL — /news/{slug}
 	source: 'facebook' | 'manual';
 	fbId: string | null; // FB Graph post id; null for manual
 	fbPermalinkUrl: string | null; // public "view on Facebook" link; null for manual
@@ -60,9 +62,10 @@ export type Article = {
 	mediaType: ArticleMediaType;
 
 	// — Media (language-neutral) —
-	images: ArticleImage[]; // 0–10 kept; news card uses images[0]
-	video: ArticleVideo | null; // present only when a <=5MB video was kept
-	externalLink: ExternalLink | null; // only for external-article; null otherwise
+	posterImage: ImageRef; // main hero photo (always present); source varies by type
+	images: ArticleImage[]; // 0–10 kept; shown between paragraphs
+	video: ArticleVideo | null; // optional embeddable video (video-only type)
+	externalLink: ExternalLink | null; // only for external-link; null otherwise
 
 	// — Visibility & publish state —
 	status: 'draft' | 'published'; // draft = brand-new never-published
@@ -86,4 +89,45 @@ export type Article = {
 	// — Translations —
 	translations: ArticleTranslation[]; // 1 (hr) … 8 entries
 	sourceLocale: Locale; // 'hr' — the human-authored source of truth
+};
+
+// A mentioned archer on the full article: name + slug (links to /team/{slug}).
+export type ArticleArcherRef = {
+	slug: string;
+	firstName: string;
+	lastName: string;
+};
+
+// Lightweight news-feed CARD. Poster + title + excerpt + date; no full body.
+export type ArticleCard = {
+	slug: string;
+	mediaType: ArticleMediaType;
+	posterImage: ImageRef;
+	publishedAt: string | null; // ISO
+	locale: Locale;
+	title: string;
+	excerpt: string;
+};
+
+// Full single-locale ARTICLE view (the /news/:slug page). Resolved text;
+// EXCLUDES draftRevision + the FB-sync fields (admin-only). fbPermalinkUrl
+// surfaces the "view on Facebook" link (null for manual posts).
+export type ArticleResolved = {
+	slug: string;
+	source: 'facebook' | 'manual';
+	fbPermalinkUrl: string | null;
+	mediaType: ArticleMediaType;
+
+	posterImage: ImageRef;
+	images: ArticleImage[];
+	video: ArticleVideo | null;
+	externalLink: ExternalLink | null;
+
+	publishedAt: string | null; // ISO
+	mentionedArchers: ArticleArcherRef[];
+
+	locale: Locale;
+	title: string;
+	body: string; // Markdown
+	excerpt: string;
 };
