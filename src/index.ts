@@ -44,6 +44,7 @@ export type { HeroImage } from './hero-image.ts';
 export type {
 	ClubInfo,
 	ClubInfoTranslation,
+	ClubValueBlock,
 	ClubOfficer,
 	ClubSocial,
 	ClubHistoryPhoto,
@@ -53,6 +54,7 @@ export type {
 } from './club-info.ts';
 export type {
 	ClubHistoryPeriod,
+	ClubHistoryParagraph,
 	ClubHistoryPeriodTranslation,
 	ClubHistoryPeriodResolved
 } from './club-history.ts';

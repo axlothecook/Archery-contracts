@@ -25,12 +25,20 @@ export type ClubHistoryPhoto = {
 	order: number;
 };
 
-// Per-locale translatable text: the about/values + history Markdown, the
+// One named value block on the /club/identity page (FC-Barcelona-identity style):
+// a bold value name + its description. The set is the club's values statement,
+// carved into titled blocks.
+export type ClubValueBlock = {
+	header: string; // value name, e.g. "Sport je ljudsko pravo"
+	body: string; // the value's description (Markdown)
+};
+
+// Per-locale translatable text: the about/values blocks + history Markdown, the
 // officer role labels (keyed by roleKey), and history-photo captions (keyed by
 // photo id). Keying by stable ids/keys keeps captions/labels aligned per locale.
 export type ClubInfoTranslation = {
 	locale: Locale;
-	valuesText: string; // Markdown
+	valuesBlocks: ClubValueBlock[]; // /club/identity named value blocks (ordered)
 	historyText: string; // Markdown
 	officerRoleLabels: Record<string, string>; // roleKey -> label
 	photoCaptions: Record<string, string>; // photo id -> caption
@@ -67,6 +75,6 @@ export type ClubInfoResolved = {
 	historyPhotos: ClubHistoryPhotoResolved[];
 
 	locale: Locale;
-	valuesText: string;
+	valuesBlocks: ClubValueBlock[];
 	historyText: string;
 };
