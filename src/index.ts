@@ -59,6 +59,15 @@ export type {
 	ClubHistoryPeriodResolved
 } from './club-history.ts';
 export type {
+	ClubIdentityKind,
+	ClubIdentityBlock,
+	ClubIdentityGalleryItem,
+	ClubIdentityContent,
+	ClubIdentitySection,
+	ClubIdentitySectionTranslation,
+	ClubIdentitySectionResolved
+} from './club-identity.ts';
+export type {
 	InquiryStatus,
 	MembershipSubmission,
 	SponsorInquiry,
