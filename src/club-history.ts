@@ -8,11 +8,24 @@ import type { ImageRef, Locale } from './common.ts';
 // per-period photo gallery (cover image only), no achievement links (the narrative
 // can reference them in prose). Present or hard-deleted.
 
-// One narrative section of the detail page: an optional bold sub-heading followed
-// by a Markdown body. The detail page renders the `lead` first, then these in order.
+// A single structured highlight in a paragraph's chronological achievement list,
+// rendered as one row "date – result • competition • archer" (date in navy,
+// result medal-coloured, competition lighter blue, archer navy).
+export type ClubHistoryHighlight = {
+	date: string; // e.g. "siječanj 2024."
+	result: string; // medal/placing, e.g. "Zlato" / "Ekipno srebro" / "9. mjesto"
+	competition: string; // e.g. "Juniorski dvoranski svjetski kup"
+	archer: string; // credited archer(s), e.g. "Leo Sulik"
+};
+
+// One narrative section of the detail page: an optional bold sub-heading, a
+// Markdown body, and an OPTIONAL structured highlights list. The detail page
+// renders the `lead` first, then these in order; a section with `highlights`
+// shows its body intro followed by the dated highlight rows.
 export type ClubHistoryParagraph = {
 	header: string; // section sub-heading, e.g. "Osnivači i prvi streličari"
-	body: string; // Markdown prose for the section
+	body: string; // Markdown prose for the section (intro text when highlights present)
+	highlights?: ClubHistoryHighlight[]; // optional chronological achievement list
 };
 
 // Per-locale translatable text. The card face shows title + subtitle; the detail
