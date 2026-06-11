@@ -76,6 +76,7 @@ export type ArcherCard = {
 	gender: 'male' | 'female' | null;
 	competitionCategories: string[];
 	bowType: Bow[];
+	roles: ('archer' | 'coach')[]; // lets the grid build a "Treneri" group from coaches
 	order: number;
 };
 
