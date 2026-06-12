@@ -14,11 +14,11 @@ export type Achievement = {
 	year: number; // history groups year-by-year, reverse-chronological
 	archerIds: string[]; // archers credited: one (individual), many (team), empty (club-level)
 	scope: 'individual' | 'team' | 'club';
-	level: 'world' | 'european' | 'state' | 'other'; // PRIMARY level
+	level: 'world' | 'european' | 'state' | 'varazdin' | 'other'; // PRIMARY level
 	// Extra levels this achievement ALSO counts toward (beyond `level`), for the
 	// club-stats rollup. E.g. a record that is BOTH a world AND European record:
 	// level='world', alsoLevels=['european']. Usually empty.
-	alsoLevels: ('world' | 'european' | 'state' | 'other')[];
+	alsoLevels: ('world' | 'european' | 'state' | 'varazdin' | 'other')[];
 	type: 'title' | 'record' | 'other'; // independent of medal
 	medal: 'gold' | 'silver' | 'bronze' | null; // optional; coexists with type
 	image: ImageRef | null; // hover-image on the history page
@@ -42,7 +42,7 @@ export type AchievementResolved = {
 	id: string;
 	year: number;
 	scope: 'individual' | 'team' | 'club';
-	level: 'world' | 'european' | 'state' | 'other';
+	level: 'world' | 'european' | 'state' | 'varazdin' | 'other';
 	type: 'title' | 'record' | 'other';
 	medal: 'gold' | 'silver' | 'bronze' | null;
 	image: ImageRef | null;

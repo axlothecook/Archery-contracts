@@ -22,6 +22,7 @@ export type {
 	ArcherPerformance,
 	ArcherCard,
 	ArcherRef,
+	ArcherAchievement,
 	ArcherProfile
 } from './archer.ts';
 export type {

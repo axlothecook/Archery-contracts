@@ -87,6 +87,17 @@ export type ArcherRef = {
 	lastName: string;
 };
 
+// One honour on the profile's "Postignuća" grid: the archer's achievements grouped
+// by title + level + medal, with how many times it was won. `level` drives the badge
+// icon (world / european / state); `medal`/`type` are carried for styling.
+export type ArcherAchievement = {
+	title: string;
+	count: number;
+	level: 'world' | 'european' | 'state' | 'varazdin' | 'other';
+	type: 'title' | 'record' | 'other';
+	medal: 'gold' | 'silver' | 'bronze' | null;
+};
+
 // Full single-locale view for the /team/:slug PROFILE page. bio resolved to the
 // requested locale; age derived (null when <18 = minor, or no birthDate, or
 // admin-hidden). Sections in hiddenSections are omitted server-side.
@@ -105,6 +116,8 @@ export type ArcherProfile = {
 
 	coaches: ArcherRef[];
 	students: ArcherRef[];
+
+	achievements: ArcherAchievement[]; // grouped honours; [] when the archer has none
 
 	careerStats: ArcherCareerStat[]; // [] if hidden or none
 	performance: ArcherPerformance[]; // [] if hidden or none
